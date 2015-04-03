@@ -63,6 +63,10 @@ void ardrone_imu_callback(const sensor_msgs::Imu ardrone_imu){
   yaw = 0.0;
 }
 
+double lowPassFilter(double current, double previous, double alpha){
+	// implement filter
+}
+
 
 int main(int argc, char** argv){
   ros::init(argc, argv, "of_odom");
