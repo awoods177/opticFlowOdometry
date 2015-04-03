@@ -1,0 +1,25 @@
+<launch>
+	<!-- Launches the AR.Drone driver -->
+	<node name="ardrone_driver" pkg="ardrone_autonomy" type="ardrone_driver" output="screen" clear_params="true">
+	    <param name="outdoor" value="0" /> <!-- If we are flying outdoors, will select more aggressive default settings -->
+	    <param name="flight_without_shell" value="1" /> <!-- Changes internal controller gains if we are flying without the propeller guard -->
+	    
+	    <param name="altitude_max" value="3000" /> <!-- in millimeters = 3 meters = 9' -->
+        <param name="altitude_min" value="50" /> <!-- in millimeters = 5cm = 2" -->
+        <param name="euler_angle_max" value="0.1" /> <!-- maximum allowable body angle in radians = 5 degrees -->
+        <param name="control_vz_max" value="200" /> <!-- maximum z velocity in mm/sec = 0.2m/sec -->
+	    <param name="control_yaw" value="6.28318" /> <!-- maximum rotation rate in radians/sec = 360 degrees per second (1 rev/sec) -->
+	    <param name="realtime_navdata" value = "True" /> <!-- set to True, the driver will publish the received information instantly -->
+	</node>
+	
+	<!-- Launches the keyboard controller -->
+	<node name="keyboard_controller" pkg="ardrone_tutorials" type="keyboard_controller.py" required="true"/>
+
+	<!-- Launches the PX4Flow sensor driver -->
+	<node name="px4flow" pkg="px4flow" type="px4flow_node" output="screen" respawn="true" clear_params="true">
+        <rosparam file="$(find px4flow)/launch/px4flow_parameters.yaml"/>
+    </node>
+
+	<!-- Launches custom optic flow odometery node -->
+	<node name="of_odom" pkg="of_odom" type="of_odom" output="screen"/>
+</launch>
